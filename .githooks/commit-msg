@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+MSG_FILE="${1:-}"
+if [[ -z "$MSG_FILE" || ! -f "$MSG_FILE" ]]; then
+  echo "commit-msg hook requires a commit message file."
+  exit 1
+fi
+
+FIRST_LINE="$(head -n 1 "$MSG_FILE")"
+if [[ ! "$FIRST_LINE" =~ ^(feat|fix|docs|chore|refactor|test|ops|data)(\([a-zA-Z0-9._-]+\))?:\ .+ ]]; then
+  echo "Commit message must use Conventional Commits, for example: feat: add pitch engine"
+  exit 1
+fi
+

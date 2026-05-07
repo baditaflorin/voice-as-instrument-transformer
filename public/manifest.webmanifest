@@ -1,0 +1,18 @@
+{
+  "name": "Voice-as-Instrument Transformer",
+  "short_name": "Voice Instrument",
+  "description": "Turn live speech or singing into pitch-tracked Rhodes, cello, and synth performances in the browser.",
+  "start_url": "/voice-as-instrument-transformer/",
+  "scope": "/voice-as-instrument-transformer/",
+  "display": "standalone",
+  "background_color": "#101315",
+  "theme_color": "#101315",
+  "icons": [
+    {
+      "src": "/voice-as-instrument-transformer/app-icon.svg",
+      "sizes": "128x128",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
