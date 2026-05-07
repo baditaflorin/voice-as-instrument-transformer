@@ -1,0 +1,40 @@
+# OS / editors
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Env and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build and coverage
+dist/
+dist-data/
+tmp/
+coverage/
+playwright-report/
+test-results/
+*.log
+
+# Go / Python coverage for future local tooling
+bin/
+*.test
+*.out
+__pycache__/
+.pytest_cache/
+.venv/
+venv/
+
