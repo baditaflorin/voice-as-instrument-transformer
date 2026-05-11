@@ -1,3 +1,5 @@
+import type { RootNote, ScaleId } from "./audio/scale";
+
 export const instruments = [
   {
     id: "rhodes",
@@ -31,14 +33,18 @@ export type VoiceInstrumentSettings = {
   octaveShift: number;
   dryMix: number;
   focusMode: FocusMode;
+  scale: ScaleId;
+  rootNote: RootNote;
 };
 
 export type EngineSnapshot = {
   status: EngineStatus;
   sourceMode: SourceMode;
   pitchHz: number | null;
+  rawPitchHz: number | null;
   noteName: string;
   cents: number;
+  scaleCents: number;
   clarity: number;
   rms: number;
   latencyMs: number;
@@ -54,14 +60,18 @@ export const defaultSettings: VoiceInstrumentSettings = {
   octaveShift: 0,
   dryMix: 0,
   focusMode: "raw",
+  scale: "major",
+  rootNote: "C",
 };
 
 export const idleSnapshot: EngineSnapshot = {
   status: "idle",
   sourceMode: "idle",
   pitchHz: null,
+  rawPitchHz: null,
   noteName: "--",
   cents: 0,
+  scaleCents: 0,
   clarity: 0,
   rms: 0,
   latencyMs: 0,

@@ -10,6 +10,7 @@ import type {
 } from "../types";
 import { defaultSettings, idleSnapshot } from "../types";
 import { clamp, frequencyToNote, rootMeanSquare, smoothFrequency } from "./pitch";
+import { snapFrequency } from "./scale";
 
 type ToneModule = typeof import("tone");
 
@@ -327,15 +328,19 @@ export class VoiceInstrumentEngine {
       const shiftedPitch = pitch * 2 ** this.settings.octaveShift;
       const smoothed = smoothFrequency(this.smoothedPitch, shiftedPitch);
       this.smoothedPitch = smoothed;
-      const note = frequencyToNote(smoothed);
+      const snap = snapFrequency(smoothed, this.settings.rootNote, this.settings.scale);
+      const playFrequency = snap.frequency || smoothed;
+      const note = frequencyToNote(playFrequency);
       const velocity = clamp(rms * 8.4, 0.12, 0.95);
-      this.playFrequency(smoothed, velocity);
+      this.playFrequency(playFrequency, velocity);
       this.emit({
         status: "playing",
         sourceMode: this.sourceMode,
-        pitchHz: smoothed,
+        pitchHz: playFrequency,
+        rawPitchHz: smoothed,
         noteName: note.noteName,
         cents: note.cents,
+        scaleCents: snap.centsFromInput,
         clarity,
         rms,
         latencyMs: Math.round(
@@ -350,8 +355,10 @@ export class VoiceInstrumentEngine {
         status: "listening",
         sourceMode: this.sourceMode,
         pitchHz: null,
+        rawPitchHz: null,
         noteName: "--",
         cents: 0,
+        scaleCents: 0,
         clarity,
         rms,
         latencyMs: Math.round(

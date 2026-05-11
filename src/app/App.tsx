@@ -20,6 +20,7 @@ import { usePhraseRecorder } from "../features/voice-instrument/usePhraseRecorde
 import { useVoiceInstrument } from "../features/voice-instrument/useVoiceInstrument";
 import type { EngineSnapshot, InstrumentId, VoiceInstrumentSettings } from "../features/voice-instrument/types";
 import { instruments } from "../features/voice-instrument/types";
+import { allRoots, allScales, rootLabels, scaleLabels } from "../features/voice-instrument/audio/scale";
 
 export function App() {
   const voice = useVoiceInstrument();
@@ -321,6 +322,46 @@ function TuningPanel({
             onChange={(event) => onChange({ focusMode: event.currentTarget.checked ? "demucs-lite" : "raw" })}
           />
         </label>
+
+        <div className="grid gap-2 sm:grid-cols-2">
+          <label className="grid gap-1 text-sm font-semibold text-ink/70">
+            Scale
+            <select
+              className="rounded-md border border-ink/10 bg-paper px-2 py-2 text-ink"
+              value={settings.scale}
+              onChange={(event) => onChange({ scale: event.currentTarget.value as VoiceInstrumentSettings["scale"] })}
+            >
+              {allScales.map((scaleId) => (
+                <option key={scaleId} value={scaleId}>
+                  {scaleLabels[scaleId]}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="grid gap-1 text-sm font-semibold text-ink/70">
+            Root
+            <select
+              className="rounded-md border border-ink/10 bg-paper px-2 py-2 text-ink disabled:opacity-50"
+              disabled={settings.scale === "chromatic"}
+              value={settings.rootNote}
+              onChange={(event) =>
+                onChange({ rootNote: event.currentTarget.value as VoiceInstrumentSettings["rootNote"] })
+              }
+            >
+              {allRoots.map((root) => (
+                <option key={root} value={root}>
+                  {rootLabels[root]}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+        {snapshot.rawPitchHz !== null && settings.scale !== "chromatic" ? (
+          <p className="text-xs font-medium text-ink/60">
+            Snap: {snapshot.scaleCents > 0 ? "+" : ""}
+            {snapshot.scaleCents} cents · raw {snapshot.rawPitchHz.toFixed(1)} Hz → {snapshot.noteName}
+          </p>
+        ) : null}
       </div>
     </section>
   );
