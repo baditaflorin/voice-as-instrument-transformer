@@ -34,7 +34,7 @@
   "license": "MIT",
   "type": "module",
   "dependencies": {
-    "@huggingface/transformers": "^4.2.0",
+    "@huggingface/transformers": "^4.3.0",
     "@tanstack/react-query": "^5.100.9",
     "lucide-react": "^1.14.0",
     "pitchy": "^4.1.0",
